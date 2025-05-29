@@ -1,4 +1,4 @@
-package com.socgen.riskweb;
+package com;
 
 import com.socgen.riskweb.Model.ResponseInternal;
 import com.socgen.riskweb.Model.ResponseSensitivity;
@@ -15,7 +15,6 @@ public class RiskwebMaestroStartup {
 
     private static final Logger LOGGER = Logger.getLogger(RiskwebMaestroStartup.class.getName());
 
-    // Removed static @Autowired to avoid injection issues
     public static void main(String[] args) throws SQLException, ParseException {
         AnnotationConfigApplicationContext annotationConfigApplicationContext = 
             new AnnotationConfigApplicationContext("com.socgen.riskweb");
@@ -25,31 +24,31 @@ public class RiskwebMaestroStartup {
         ObjectMapper mapperObj = new ObjectMapper();
 
         try {
-            // Fetch and save internal registrations
+            // Fetch and save internal registrationsations
             ResponseInternal internalResponse = restClientUtility.sendPrimaryroleApi("internalRegistration", "Internal");
             if (internalResponse != null) {
-                System.out.println("Calling sendPrimaryroleApi for Internal");
+                System.out.println("Calling sendPrimaryRoleApi for Internal");
                 LOGGER.info("Calling sendPrimaryroleApi for Internal");
-                clientDao.savePrimaryroleApi(internalResponse, "TMAESNUMIPL");
+                clientDao.savePrimaryRoleApi(internalResponse, "TMAESNUMIPL");
             }
 
-            // Fetch and save external registrations
+            // Fetch and save external registrationsations
             ResponseInternal externalResponse = restClientUtility.sendPrimaryroleApi("externalRegistration", "External");
             if (externalResponse != null) {
-                System.out.println("Calling sendPrimaryroleApi for External");
-                LOGGER.info("Calling sendPrimaryroleApi for External");
-                clientDao.savePrimaryroleApi(externalResponse, "WK_MAESTRO_EXTROLE_DBE");
+                System.out.println("Calling sendPrimaryRoleApi for External");
+                LOGGER.info("Calling External sendPrimaryroleApi for External");
+                clientDao.savePrimaryRoleApi(externalResponse, "WK_MAESTRO_EXTROLE_DBE");
             }
 
-            // Existing sensitivity API call (unchanged)
-            ResponseSensitivity sensitivityResponse = restClientUtility.sendInternalRatingsApi();
+            // Existing sensitivity code (unchanged)
+            ResponseSensitivity sensitivityResponse = restClientUtility.sendInternalRatingsApi()");
             if (sensitivityResponse != null) {
                 System.out.println("Calling sendInternalRatingsApi");
                 LOGGER.info("Calling sendInternalRatingsApi");
                 clientDao.saveSensitivityApi(sensitivityResponse);
             }
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
             LOGGER.severe("Error: " + e.getMessage());
             e.printStackTrace();
         } finally {
