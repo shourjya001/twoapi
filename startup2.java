@@ -1,6 +1,7 @@
+// Modified Startup code example
 public class RiskwebMaestroStartup {
     @Autowired
-    static RiskwebClientDao clientDao;
+    static RiskwebclientDao clientDao;
     
     private static final Logger LOGGER = Logger.getLogger(RiskwebMaestroStartup.class);
     
@@ -8,7 +9,7 @@ public class RiskwebMaestroStartup {
         AnnotationConfigApplicationContext annotationConfigApplicationContext = // your context initialization
         
         RiskwebClientService riskwebClientService = (RiskwebClientService) annotationConfigApplicationContext.getBean("riskwebClientService");
-        RestClientUtility restClientUtility = (RestClientUtility) annotationConfigApplicationContext.getBean("restClientUtility");
+        RestClientutility restClientUtility = (RestClientutility) annotationConfigApplicationContext.getBean("restClientUtility");
         
         try {
             // Process internal registrations
