@@ -17,7 +17,49 @@ public class RestClientUtility {
 
     // Your existing decompressData method remains the same
     private String decompressData(byte[] compressedBytes) {
-        // ... existing implementation unchanged
+        try {
+            ByteArrayInputStream bis = new ByteArrayInputStream(compressedBytes);
+            GZIPInputStream gis = new GZIPInputStream(bis);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            byte[] buffer = new byte[1098];
+            int len;
+            while ((len = gis.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+            }
+
+            gis.close();
+            bos.close();
+
+            return new String(bos.toByteArray(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            log.warning("GZIP decompression failed, trying Inflater: " + e.getMessage());
+            System.out.println("GZIP decompression failed, trying Inflater: " + e.getMessage());
+
+            try {
+                Inflater inflater = new Inflater(true);
+                inflater.setInput(compressedBytes);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream(compressedBytes.length);
+                byte[] buffer = new byte[9098];
+
+                while (!inflater.finished()) {
+                    int count = inflater.inflate(buffer);
+                    outputStream.write(buffer, 0, count);
+                }
+
+                outputStream.close();
+                inflater.end();
+
+                return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+            } catch (DataFormatException | IOException ex) {
+                log.severe("Error decompressing content with Inflater: " + ex.getMessage());
+                System.err.println("Error decompressing content with Inflater: " + ex.getMessage());
+                ex.printStackTrace();
+                System.out.println("Both decompression methods failed. Returning original data as string.");
+                log.severe("Both decompression methods failed. Returning original data as string.");
+                return new String(compressedBytes, StandardCharsets.UTF_8);
+            }
+        }
     }
 
     // Your existing method for internal registrations
