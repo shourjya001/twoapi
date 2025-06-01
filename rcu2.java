@@ -1,10 +1,11 @@
+// Modified RestClientUtility.java
 @Component("restClientUtility")
 public class RestClientUtility {
 
     private static final Logger log = Logger.getLogger(RestClientUtility.class.getName());
 
     @Autowired
-    DbeClientDao clientDao;
+    RiskwebClientDao clientDao;
 
     @Autowired
     ObeclientProperties dbeclientProperties;
@@ -16,7 +17,8 @@ public class RestClientUtility {
     private ApplicationConfig applicationConfig;
 
     // Your existing decompressData method remains the same
-    private String decompressData(byte[] compressedBytes) {
+     private String decompressData(byte[] compressedBytes) {
+        // First, try GZIP decompression
         try {
             ByteArrayInputStream bis = new ByteArrayInputStream(compressedBytes);
             GZIPInputStream gis = new GZIPInputStream(bis);
@@ -36,8 +38,9 @@ public class RestClientUtility {
             log.warning("GZIP decompression failed, trying Inflater: " + e.getMessage());
             System.out.println("GZIP decompression failed, trying Inflater: " + e.getMessage());
 
+            // If GZIP fails, try Inflater
             try {
-                Inflater inflater = new Inflater(true);
+                Inflater inflater = new Inflater(true); // true for ZLIB header
                 inflater.setInput(compressedBytes);
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream(compressedBytes.length);
                 byte[] buffer = new byte[9098];
@@ -55,6 +58,8 @@ public class RestClientUtility {
                 log.severe("Error decompressing content with Inflater: " + ex.getMessage());
                 System.err.println("Error decompressing content with Inflater: " + ex.getMessage());
                 ex.printStackTrace();
+                
+                // If both decompression methods fail, return the original data as a string
                 System.out.println("Both decompression methods failed. Returning original data as string.");
                 log.severe("Both decompression methods failed. Returning original data as string.");
                 return new String(compressedBytes, StandardCharsets.UTF_8);
