@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=/path/to/b2t-irccrm-parent-B2T-1.0.10.pom -DgroupId=com.sgicib.b2t.irccrm.feed -DartifactId=b2t-irccrm-parent -Dversion=B2T-1.0.10 -Dpackaging=pom
