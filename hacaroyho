@@ -1,0 +1,4 @@
+Tech stack: 
+ Backend : python 3.13.7, FastApi, IMAP library , SMTP library, Pydantic
+Frontend: html, css, reactjs
+Model: groq-api key , model name : meta-llama/ llama-4-scout-17b-16e-instruct
