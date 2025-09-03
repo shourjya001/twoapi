@@ -1,0 +1,3 @@
+Future enhancement: 
+1. File sharing by Fuzzy matching: If sender asked for documents (e.g. report ) agent will automatically look into the local directory and based on the matching score (e.g. quarterly_report, Sales_report etc ) it will send the file automatically.
+2. If the sender asked for meeting the agent will look into my calendar and based on the slot availability it will block the meeting in my calendar
