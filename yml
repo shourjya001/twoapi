@@ -1,0 +1,14 @@
+private static void updatePropertiesFile(Map<String, String> secrets) throws IOException {
+    Path path = Paths.get("src/main/resources/application.properties");
+    String content = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+
+    for (Map.Entry<String, String> entry : secrets.entrySet()) {
+        String key = entry.getKey();
+        String value = entry.getValue();
+        // Safe replacement (no regex!)
+        content = content.replace(key, value);
+    }
+
+    Files.write(path, content.getBytes(StandardCharsets.UTF_8));
+    System.out.println("application.properties updated successfully");
+}
